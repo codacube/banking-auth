@@ -1,6 +1,6 @@
 # Auth Module for Banking API
 
-## Summary of the internal/auth packages
+## Summary of the auth packages
 
 - app: this is the startup/bootstrap layer. It sets up the HTTP router, loads environment config, creates the DB client, and registers the auth endpoints. See `app.go`.
   - It wires the service into routes like login, verify, and a placeholder register endpoint.
@@ -45,3 +45,9 @@ and dto is the contract layer between HTTP and service code.
 1. Validity of the token (includes the expiry and the signature verification)
 2. Verify if the role has access to the resource
 3. Need to verify if the resource being accessed is for the same user
+
+## Status Codes Returned
+
+401 - authentication error (credentials do not match)
+403 - authorisation error (access is forbidden, no permission for resource)
+500 - internal server error ()

@@ -3,7 +3,7 @@ package dto
 import (
 	"errors"
 
-	"github.com/codacube/go-microservice-banking/internal/auth/domain"
+	"github.com/codacube/banking-auth/domain"
 	"github.com/golang-jwt/jwt/v4"
 )
 

@@ -1,6 +1,6 @@
 # Auth Module for Banking API
 
-## Summary of the internal/auth packages
+## Summary of the auth packages
 
 - app: this is the startup/bootstrap layer. It sets up the HTTP router, loads environment config, creates the DB client, and registers the auth endpoints. See `app.go`.
   - It wires the service into routes like login, verify, and a placeholder register endpoint.

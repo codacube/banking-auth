@@ -2,7 +2,6 @@ package domain
 
 import (
 	"database/sql"
-	"log"
 
 	"github.com/codacube/banking-lib/errs"
 	"github.com/codacube/banking-lib/logger"
@@ -35,7 +34,7 @@ func (db AuthRepositoryDb) FindBy(username, password string) (*Login, *errs.AppE
 		if err == sql.ErrNoRows {
 			return nil, errs.NewAuthenticationError("invalid credentials")
 		} else {
-			log.Println("Error while verifying login request from database: " + err.Error())
+			logger.Error("Error while verifying login request from database: " + err.Error())
 			return nil, errs.NewUnexpectedError("Unexpected database error")
 		}
 	}

@@ -11,9 +11,9 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/jmoiron/sqlx"
 
+	"github.com/codacube/banking-auth/domain"
+	"github.com/codacube/banking-auth/service"
 	"github.com/codacube/banking-lib/logger"
-	"github.com/codacube/go-microservice-banking/internal/auth/domain"
-	"github.com/codacube/go-microservice-banking/internal/auth/service"
 )
 
 func Start() {

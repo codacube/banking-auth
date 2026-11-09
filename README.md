@@ -45,3 +45,9 @@ and dto is the contract layer between HTTP and service code.
 1. Validity of the token (includes the expiry and the signature verification)
 2. Verify if the role has access to the resource
 3. Need to verify if the resource being accessed is for the same user
+
+## Status Codes Returned
+
+401 - authentication error (credentials do not match)
+403 - authorisation error (access is forbidden, no permission for resource)
+500 - internal server error ()

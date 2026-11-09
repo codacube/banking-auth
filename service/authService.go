@@ -3,10 +3,10 @@ package service
 import (
 	"fmt"
 
+	"github.com/codacube/banking-auth/domain"
+	"github.com/codacube/banking-auth/dto"
 	"github.com/codacube/banking-lib/errs"
 	"github.com/codacube/banking-lib/logger"
-	"github.com/codacube/go-microservice-banking/internal/auth/domain"
-	"github.com/codacube/go-microservice-banking/internal/auth/dto"
 	"github.com/dgrijalva/jwt-go"
 )
 

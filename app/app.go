@@ -17,7 +17,10 @@ import (
 )
 
 func Start() {
-	sanityCheck()
+	if !sanityCheck() {
+		os.Exit(1)
+	}
+
 	router := mux.NewRouter()
 	authRepository := domain.NewAuthRepository(getDBClient())
 	ah := AuthHandler{service.NewLoginService(authRepository, domain.GetRolePermissions())}
@@ -53,7 +56,7 @@ func getDBClient() *sqlx.DB {
 	return client
 }
 
-func sanityCheck() {
+func sanityCheck() bool {
 	envProps := []string{
 		"AUTH_SERVER_ADDRESS",
 		"AUTH_SERVER_PORT",
@@ -66,6 +69,9 @@ func sanityCheck() {
 	for _, k := range envProps {
 		if os.Getenv(k) == "" {
 			logger.Error(fmt.Sprintf("Environment variable %s not defined. Terminating application...", k))
+			return false
 		}
 	}
+
+	return true
 }

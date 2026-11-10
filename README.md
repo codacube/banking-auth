@@ -55,3 +55,12 @@ and dto is the contract layer between HTTP and service code.
 | **404 Not Found**      | `NewNotFoundError`       | Requested entity/resource does not exist.                       |
 | **422 Unprocessable**  | `NewValidationError`     | Malformed or invalid input payload.                             |
 | **500 Internal Error** | `NewUnexpectedError`     | Database outages, token-signing failures, unexpected panics.    |
+
+## Be sure to test
+
+- Without token
+- Happy path (ie. with token)
+- Send wrong token claims in the URL
+- Not authorised role
+- Invalid token
+- Expired token

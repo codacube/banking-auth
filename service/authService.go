@@ -47,35 +47,35 @@ func (s DefaultAuthService) Login(req dto.LoginRequest) (*dto.LoginResponse, *er
 
 func (s DefaultAuthService) Verify(urlParams map[string]string) *errs.AppError {
 	// Convert the string token to JWT struct
-	if jwtToken, err := jwtTokenFromString(urlParams["token"]); err != nil {
+	jwtToken, err := jwtTokenFromString(urlParams["token"])
+	if err != nil {
 		return errs.NewAuthorisationError(err.Error())
-	} else {
-		/*
-			Checking the validity of the token, this verifies the expiry time and
-			the signature of the token
-		*/
-		if jwtToken.Valid {
-			// Cast the token claims to jwt.MapClaims
-			claims := jwtToken.Claims.(*domain.AccessTokenClaims)
-			/* If Role is user then check if the account_id and customer_id coming
-			   in the URL belongs to the same token
-			*/
-			if claims.IsUserRole() {
-				if !claims.IsRequestVerifiedWithTokenClaims(urlParams) {
-					return errs.NewAuthorisationError("request not verified with the token claims")
-				}
-			}
-
-			// Verify if the role is authorised to use the route
-			isAuthorised := s.rolePermissions.IsAuthorisedFor(claims.Role, urlParams["routeName"])
-			if !isAuthorised {
-				return errs.NewAuthorisationError(fmt.Sprintf("%s role is not authorised", claims.Role))
-			}
-			return nil
-		} else {
-			return errs.NewAuthorisationError("invalid token")
-		}
 	}
+
+	/*
+		Checking the validity of the token, this verifies the expiry time and
+		the signature of the token
+	*/
+	if !jwtToken.Valid {
+		return errs.NewAuthorisationError("invalid token")
+	}
+
+	// Cast the token claims to jwt.MapClaims
+	claims := jwtToken.Claims.(*domain.AccessTokenClaims)
+	/* If Role is user then check if the account_id and customer_id coming
+	   in the URL belongs to the same token
+	*/
+	if claims.IsUserRole() && !claims.IsRequestVerifiedWithTokenClaims(urlParams) {
+		return errs.NewAuthorisationError("request not verified with the token claims")
+	}
+
+	// Verify if the role is authorised to use the route
+	if !s.rolePermissions.IsAuthorisedFor(claims.Role, urlParams["routeName"]) {
+		return errs.NewAuthorisationError(fmt.Sprintf("%s role is not authorised", claims.Role))
+	}
+
+	// Everythink is ok
+	return nil
 }
 
 func (s DefaultAuthService) Refresh(request dto.RefreshTokenRequest) (*dto.LoginResponse, *errs.AppError) {

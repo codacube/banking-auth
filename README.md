@@ -48,6 +48,10 @@ and dto is the contract layer between HTTP and service code.
 
 ## Status Codes Returned
 
-401 - authentication error (credentials do not match)
-403 - authorisation error (access is forbidden, no permission for resource)
-500 - internal server error ()
+| HTTP Status            | Error Constructor        | Context / Usage                                                 |
+| ---------------------- | ------------------------ | --------------------------------------------------------------- |
+| **401 Unauthorized**   | `NewAuthenticationError` | Failed login, invalid credentials, or expired identity.         |
+| **403 Forbidden**      | `NewAuthorizationError`  | Authenticated identity lacks permission to access the resource. |
+| **404 Not Found**      | `NewNotFoundError`       | Requested entity/resource does not exist.                       |
+| **422 Unprocessable**  | `NewValidationError`     | Malformed or invalid input payload.                             |
+| **500 Internal Error** | `NewUnexpectedError`     | Database outages, token-signing failures, unexpected panics.    |

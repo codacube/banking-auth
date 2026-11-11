@@ -25,8 +25,7 @@ func (s DefaultAuthService) Login(req dto.LoginRequest) (*dto.LoginResponse, *er
 	var appErr *errs.AppError
 	var login *domain.Login
 
-	login, appErr = s.repo.FindBy(req.Username, req.Password)
-	if appErr != nil {
+	if login, appErr = s.repo.FindBy(req.Username, req.Password); appErr != nil {
 		return nil, appErr
 	}
 
@@ -42,7 +41,6 @@ func (s DefaultAuthService) Login(req dto.LoginRequest) (*dto.LoginResponse, *er
 	}
 
 	return &dto.LoginResponse{AccessToken: accessToken, RefreshToken: refreshToken}, nil
-
 }
 
 func (s DefaultAuthService) Verify(urlParams map[string]string) *errs.AppError {
